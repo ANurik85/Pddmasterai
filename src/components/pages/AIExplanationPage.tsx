@@ -67,13 +67,7 @@ interface CanvasObject {
   color: string;
 }
 
-interface AIExplanationPageProps {
-  onNavigate: (page: string) => void;
-}
-
-export const AIExplanationPage = ({
-  onNavigate,
-}: AIExplanationPageProps) => {
+export const AIExplanationPage = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",

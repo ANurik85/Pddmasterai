@@ -4,11 +4,7 @@ import { Card, CardContent } from "../ui/card";
 import { UploadCloud, Image as ImageIcon, CheckCircle, Loader2, Camera, FileImage, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 
-interface PhotoAnalysisPageProps {
-  onNavigate: (page: string) => void;
-}
-
-export const PhotoAnalysisPage = ({ onNavigate }: PhotoAnalysisPageProps) => {
+export const PhotoAnalysisPage = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<boolean>(false);
   const [dragActive, setDragActive] = useState(false);

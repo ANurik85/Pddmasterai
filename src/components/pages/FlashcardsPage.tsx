@@ -6,10 +6,7 @@ import {
   ArrowLeft, Check, RotateCcw, HelpCircle, ChevronDown,
   BrainCircuit, BookOpen, AlertTriangle, Info
 } from "lucide-react";
-
-interface FlashcardsPageProps {
-  onNavigate: (page: string) => void;
-}
+import { useNavigate } from "react-router-dom";
 
 type CardStatus = "know" | "hard" | "forgot" | null;
 
@@ -678,7 +675,8 @@ const CardItem = ({ card, isFlipped, status, onFlip, onStatus }: CardItemProps) 
 
 // ─── Main page component ──────────────────────────────────────────────────────
 
-export const FlashcardsPage = ({ onNavigate }: FlashcardsPageProps) => {
+export const FlashcardsPage = () => {
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("Запрещающие");
   const [flippedCards, setFlippedCards] = useState<Set<number>>(new Set());
   const [cardStatuses, setCardStatuses] = useState<Record<number, CardStatus>>({});
@@ -734,8 +732,8 @@ export const FlashcardsPage = ({ onNavigate }: FlashcardsPageProps) => {
       <div className="bg-white border-b border-slate-100 sticky top-0 z-20 shadow-sm">
         <div className="container mx-auto px-4 md:px-6 max-w-6xl">
           <div className="flex items-center justify-between py-3">
-            <div className="flex items-center gap-3">
-              <Button variant="ghost" size="sm" onClick={() => onNavigate("learn")} className="gap-1.5 text-slate-600 hover:text-slate-900">
+          <div className="flex items-center gap-3">
+            <Button variant="ghost" size="sm" onClick={() => navigate("/learn")} className="gap-1.5 text-slate-600 hover:text-slate-900">
                 <ArrowLeft className="h-4 w-4" /> Назад
               </Button>
               <div className="h-5 w-px bg-slate-200" />

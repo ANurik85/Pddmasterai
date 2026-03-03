@@ -3,12 +3,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 import { Button } from "../ui/button";
 import { BrainCircuit, Clock, Car, AlertTriangle, ChevronRight, Trophy, Zap, BookOpen } from "lucide-react";
 import { Badge } from "../ui/badge";
+import { useNavigate } from "react-router-dom";
 
-interface PracticeHubProps {
-  onNavigate: (page: string) => void;
-}
-
-export const PracticeHub = ({ onNavigate }: PracticeHubProps) => {
+export const PracticeHub = () => {
+  const navigate = useNavigate();
   return (
     <div className="container mx-auto p-4 md:p-8 max-w-7xl space-y-10">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -40,7 +38,7 @@ export const PracticeHub = ({ onNavigate }: PracticeHubProps) => {
              </CardDescription>
            </CardHeader>
            <CardContent>
-             <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-md h-12 text-base" onClick={() => onNavigate('test')}>
+             <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-md h-12 text-base" onClick={() => navigate('/test')}>
                 <Zap className="mr-2 h-4 w-4" /> Начать тест
              </Button>
            </CardContent>
@@ -61,7 +59,7 @@ export const PracticeHub = ({ onNavigate }: PracticeHubProps) => {
              </CardDescription>
            </CardHeader>
            <CardContent>
-             <Button variant="destructive" className="w-full bg-red-600 hover:bg-red-700 shadow-md h-12 text-base" onClick={() => onNavigate('test')}>
+             <Button variant="destructive" className="w-full bg-red-600 hover:bg-red-700 shadow-md h-12 text-base" onClick={() => navigate('/test')}>
                 Начать экзамен
              </Button>
            </CardContent>
@@ -82,7 +80,7 @@ export const PracticeHub = ({ onNavigate }: PracticeHubProps) => {
              </CardDescription>
            </CardHeader>
            <CardContent>
-             <Button className="w-full bg-green-600 hover:bg-green-700 text-white shadow-md h-12 text-base" onClick={() => onNavigate('simulation')}>
+             <Button className="w-full bg-green-600 hover:bg-green-700 text-white shadow-md h-12 text-base" onClick={() => navigate('/simulation')}>
                 Запустить
              </Button>
            </CardContent>
@@ -95,7 +93,7 @@ export const PracticeHub = ({ onNavigate }: PracticeHubProps) => {
             <AlertTriangle className="h-5 w-5 text-orange-500" />
             Работа над ошибками
         </h2>
-        <Card className="border-2 border-dashed border-orange-200 bg-orange-50/50 hover:bg-orange-50 transition-colors cursor-pointer group" onClick={() => onNavigate('test')}>
+        <Card className="border-2 border-dashed border-orange-200 bg-orange-50/50 hover:bg-orange-50 transition-colors cursor-pointer group" onClick={() => navigate('/test')}>
            <CardContent className="p-6 md:p-8">
               <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                  <div className="flex items-center gap-6">
@@ -136,7 +134,7 @@ export const PracticeHub = ({ onNavigate }: PracticeHubProps) => {
                 key={i} 
                 variant="secondary" 
                 className="h-auto py-4 text-sm font-medium justify-start px-4 bg-white hover:bg-slate-50 border shadow-sm hover:shadow hover:border-primary/30 transition-all text-slate-700"
-                onClick={() => onNavigate('test')}
+                onClick={() => navigate('/test')}
               >
                  {cat}
               </Button>

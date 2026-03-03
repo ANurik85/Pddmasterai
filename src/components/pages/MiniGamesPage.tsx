@@ -4,12 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../ui
 import { Badge } from "../ui/badge";
 import { Trophy, Play, Star, AlertCircle, CheckCircle, Hand, Timer } from "lucide-react";
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
-interface MiniGamesPageProps {
-  onNavigate: (page: string) => void;
-}
-
-export const MiniGamesPage = ({ onNavigate }: MiniGamesPageProps) => {
+export const MiniGamesPage = () => {
+  const navigate = useNavigate();
   const games = [
     {
       id: 1,
@@ -102,7 +100,7 @@ export const MiniGamesPage = ({ onNavigate }: MiniGamesPageProps) => {
                              <span className="text-sm font-bold text-slate-400 flex items-center gap-1">
                                  <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" /> {game.points}
                              </span>
-                             <Button size="sm" className="gap-2 rounded-full px-4 shadow-sm group-hover:shadow-md transition-all bg-slate-900 text-white hover:bg-primary">
+                             <Button size="sm" className="gap-2 rounded-full px-4 shadow-sm group-hover:shadow-md transition-all bg-slate-900 text-white hover:bg-primary" onClick={() => navigate('/games')}>
                                  <Play className="h-3 w-3 fill-current" /> Играть
                              </Button>
                          </div>

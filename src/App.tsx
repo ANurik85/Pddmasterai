@@ -1,9 +1,9 @@
 import React, { useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Header } from "./components/layout/Header";
 import { Footer } from "./components/layout/Footer";
 import { MainWorkspace } from "./components/dashboard/MainWorkspace";
 
-// Pages
 import { LearningHub } from "./components/pages/LearningHub";
 import { PracticeHub } from "./components/pages/PracticeHub";
 import { LessonPage } from "./components/pages/LessonPage";
@@ -20,7 +20,6 @@ import { Mic } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState("home");
   const [isListening, setIsListening] = useState(false);
 
   const toggleVoiceAssistant = () => {
@@ -31,49 +30,26 @@ export default function App() {
     }
   };
 
-  const renderPage = () => {
-    switch (currentPage) {
-      case "home":
-        return <MainWorkspace />; // Using existing workspace as Home for now, or could be LearningHub
-      case "learn":
-        return <LearningHub onNavigate={setCurrentPage} />;
-      case "practice":
-        return <PracticeHub onNavigate={setCurrentPage} />;
-      case "lesson":
-        return <LessonPage onNavigate={setCurrentPage} />;
-      case "cards":
-        return <FlashcardsPage onNavigate={setCurrentPage} />;
-      case "ai-explanation":
-      case "ai-scenario": // Both map to same page, logic inside page handles tab default if needed (future improvement)
-        return (
-          <AIExplanationPage onNavigate={setCurrentPage} />
-        );
-      case "games":
-        return <MiniGamesPage onNavigate={setCurrentPage} />;
-      case "test":
-        return <TestInterface onNavigate={setCurrentPage} />;
-      case "simulation":
-        return (
-          <SimulationInterface onNavigate={setCurrentPage} />
-        );
-      case "results":
-        return <ResultsPage onNavigate={setCurrentPage} />;
-      case "profile":
-        return <ProfilePage onNavigate={setCurrentPage} />;
-      case "analyze-photo":
-        return (
-          <PhotoAnalysisPage onNavigate={setCurrentPage} />
-        );
-      default:
-        return <MainWorkspace />;
-    }
-  };
-
   return (
     <div className="min-h-screen flex flex-col bg-background font-sans antialiased text-slate-900 relative">
-      <Header onNavigate={setCurrentPage} />
+      <Header />
       <main className="flex-1 flex flex-col">
-        {renderPage()}
+        <Routes>
+          <Route path="/" element={<MainWorkspace />} />
+          <Route path="/learn" element={<LearningHub />} />
+          <Route path="/practice" element={<PracticeHub />} />
+          <Route path="/lesson" element={<LessonPage />} />
+          <Route path="/cards" element={<FlashcardsPage />} />
+          <Route path="/ai-explanation" element={<AIExplanationPage />} />
+          <Route path="/ai-scenario" element={<AIExplanationPage />} />
+          <Route path="/games" element={<MiniGamesPage />} />
+          <Route path="/test" element={<TestInterface />} />
+          <Route path="/simulation" element={<SimulationInterface />} />
+          <Route path="/results" element={<ResultsPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/analyze-photo" element={<PhotoAnalysisPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </main>
       <Footer />
 

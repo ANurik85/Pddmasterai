@@ -4,12 +4,10 @@ import { Button } from "../ui/button";
 import { Progress } from "../ui/progress";
 import { PlayCircle, Layers, BrainCircuit, Gamepad2, AlertTriangle, Signpost, ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
-interface LearningHubProps {
-  onNavigate: (page: string) => void;
-}
-
-export const LearningHub = ({ onNavigate }: LearningHubProps) => {
+export const LearningHub = () => {
+  const navigate = useNavigate();
   return (
     <div className="container mx-auto p-4 md:p-8 space-y-10 max-w-7xl">
       
@@ -42,14 +40,14 @@ export const LearningHub = ({ onNavigate }: LearningHubProps) => {
                    <span>Прогресс урока</span>
                    <span>60%</span>
                 </div>
-                <Progress value={60} className="h-3 bg-slate-700/50" indicatorClassName="bg-blue-500" />
+                <Progress value={60} className="h-3 bg-slate-700/50 [&>[data-slot=progress-indicator]]:bg-blue-500" />
               </div>
               <p className="text-slate-300 max-w-lg leading-relaxed">
                 Вы остановились на теме "Знаки преимущества встречного движения". Осталось пройти тест и практическое задание.
               </p>
             </CardContent>
             <CardFooter className="relative z-10 pt-2">
-              <Button onClick={() => onNavigate('lesson')} size="lg" className="bg-white text-slate-900 hover:bg-blue-50 hover:text-blue-700 transition-colors gap-2 font-semibold shadow-lg">
+              <Button onClick={() => navigate('/lesson')} size="lg" className="bg-white text-slate-900 hover:bg-blue-50 hover:text-blue-700 transition-colors gap-2 font-semibold shadow-lg">
                 <PlayCircle className="h-5 w-5" />
                 Продолжить урок
               </Button>
@@ -69,7 +67,7 @@ export const LearningHub = ({ onNavigate }: LearningHubProps) => {
               { title: "Проезд перекрестков", desc: "Частые ошибки в очередности.", color: "text-orange-500", border: "border-l-orange-500", bg: "bg-orange-50", icon: AlertTriangle, label: "Слабая тема" },
               { title: "Временная разметка", desc: "Приоритет над постоянной.", color: "text-yellow-500", border: "border-l-yellow-500", bg: "bg-yellow-50", icon: AlertTriangle, label: "Нужно закрепить" }
             ].map((item, i) => (
-               <Card key={i} className={`border-l-4 ${item.border} hover:shadow-lg transition-all cursor-pointer group bg-white`} onClick={() => onNavigate('lesson')}>
+               <Card key={i} className={`border-l-4 ${item.border} hover:shadow-lg transition-all cursor-pointer group bg-white`} onClick={() => navigate('/lesson')}>
                 <CardHeader className="pb-3">
                   <div className={`flex items-center gap-2 ${item.color} mb-2 bg-white w-fit px-2 py-1 rounded-md shadow-sm border`}>
                     <item.icon className="h-4 w-4" />
@@ -104,7 +102,7 @@ export const LearningHub = ({ onNavigate }: LearningHubProps) => {
              { title: "Перекрестки", count: "8 уроков", icon: AlertTriangle, color: "text-red-600", bg: "bg-red-100" },
              { title: "Безопасность", count: "10 уроков", icon: BrainCircuit, color: "text-green-600", bg: "bg-green-100" },
            ].map((course, i) => (
-             <Card key={i} className="hover:border-primary/50 hover:shadow-md transition-all cursor-pointer group bg-white" onClick={() => onNavigate('lesson')}>
+             <Card key={i} className="hover:border-primary/50 hover:shadow-md transition-all cursor-pointer group bg-white" onClick={() => navigate('/lesson')}>
                 <CardContent className="p-6 flex flex-col gap-4">
                    <div className={`h-14 w-14 rounded-2xl ${course.bg} flex items-center justify-center ${course.color} group-hover:scale-110 transition-transform shadow-sm`}>
                       <course.icon className="h-7 w-7" />
@@ -124,11 +122,11 @@ export const LearningHub = ({ onNavigate }: LearningHubProps) => {
         <h2 className="text-xl font-bold mb-4 tracking-tight text-slate-800">Быстрый доступ</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
            {[
-             { id: 'cards', title: "Карточки", desc: "Повторение в стиле Anki", icon: Layers },
-             { id: 'ai-scenario', title: "AI Симулятор", desc: "Разбор сложных ситуаций", icon: BrainCircuit },
-             { id: 'games', title: "Мини-игры", desc: "Обучение в игре", icon: Gamepad2 },
+             { path: '/cards', title: "Карточки", desc: "Повторение в стиле Anki", icon: Layers },
+             { path: '/ai-scenario', title: "AI Симулятор", desc: "Разбор сложных ситуаций", icon: BrainCircuit },
+             { path: '/games', title: "Мини-игры", desc: "Обучение в игре", icon: Gamepad2 },
            ].map((tool) => (
-             <Button key={tool.id} variant="outline" className="h-auto py-6 px-6 flex items-center justify-start gap-4 hover:bg-primary/5 hover:border-primary/30 border-2 bg-white" onClick={() => onNavigate(tool.id)}>
+             <Button key={tool.path} variant="outline" className="h-auto py-6 px-6 flex items-center justify-start gap-4 hover:bg-primary/5 hover:border-primary/30 border-2 bg-white" onClick={() => navigate(tool.path)}>
                 <div className="p-3 rounded-full bg-primary/10 text-primary">
                   <tool.icon className="h-6 w-6" />
                 </div>

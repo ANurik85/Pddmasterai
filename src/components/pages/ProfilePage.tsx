@@ -34,12 +34,10 @@ import {
   Shield,
   Heart
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-interface ProfilePageProps {
-  onNavigate: (page: string) => void;
-}
-
-export const ProfilePage = ({ onNavigate }: ProfilePageProps) => {
+export const ProfilePage = () => {
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   
   return (
@@ -75,7 +73,7 @@ export const ProfilePage = ({ onNavigate }: ProfilePageProps) => {
               <Settings className="h-4 w-4 mr-2" />
               Настройки
             </Button>
-            <Button className="rounded-xl" onClick={() => onNavigate('learn')}>
+            <Button className="rounded-xl" onClick={() => navigate('/learn')}>
               Продолжить обучение
             </Button>
          </div>

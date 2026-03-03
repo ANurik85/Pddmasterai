@@ -5,6 +5,7 @@
 
   export default defineConfig({
     plugins: [react()],
+    appType: 'spa',
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
       alias: {
@@ -55,6 +56,7 @@
     },
     server: {
       port: 3000,
+      strictPort: true,
       open: true,
     },
   });

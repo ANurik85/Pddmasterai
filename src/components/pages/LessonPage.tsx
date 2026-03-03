@@ -17,12 +17,10 @@ import {
   AccordionTrigger,
 } from "../ui/accordion";
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
-interface LessonPageProps {
-  onNavigate: (page: string) => void;
-}
-
-export const LessonPage = ({ onNavigate }: LessonPageProps) => {
+export const LessonPage = () => {
+  const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const totalSteps = 5;
   const progress = (step / totalSteps) * 100;
@@ -31,7 +29,7 @@ export const LessonPage = ({ onNavigate }: LessonPageProps) => {
     <div className="container mx-auto p-4 md:p-8 max-w-6xl space-y-8">
       {/* Top Bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-xl shadow-sm border">
-        <Button variant="ghost" onClick={() => onNavigate('learn')} className="gap-2 self-start">
+        <Button variant="ghost" onClick={() => navigate('/learn')} className="gap-2 self-start">
           <ChevronLeft className="h-4 w-4" /> Назад к курсу
         </Button>
         <div className="flex flex-col md:flex-row items-center gap-4 flex-1 max-w-xl mx-auto w-full">
@@ -145,7 +143,7 @@ export const LessonPage = ({ onNavigate }: LessonPageProps) => {
                  <p className="text-sm text-slate-600 italic bg-white/50 p-3 rounded-lg border border-blue-100/50">
                    "Почему знак STOP восьмиугольный?"
                  </p>
-                 <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700 shadow-md" onClick={() => onNavigate('ai-explanation')}>
+                 <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700 shadow-md" onClick={() => navigate('/ai-explanation')}>
                    Спросить ИИ
                  </Button>
                </div>
@@ -160,7 +158,7 @@ export const LessonPage = ({ onNavigate }: LessonPageProps) => {
         <Button variant="outline" size="lg" disabled={step === 1} onClick={() => setStep(s => s - 1)} className="w-32">
           <ChevronLeft className="mr-2 h-4 w-4" /> Назад
         </Button>
-        <Button size="lg" onClick={() => step < totalSteps ? setStep(s => s + 1) : onNavigate('learn')} className="w-32 bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all">
+        <Button size="lg" onClick={() => step < totalSteps ? setStep(s => s + 1) : navigate('/learn')} className="w-32 bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all">
           {step < totalSteps ? 'Далее' : 'Завершить'} <ChevronRight className="ml-2 h-4 w-4" />
         </Button>
       </div>

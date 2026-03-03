@@ -4,12 +4,10 @@ import { Card } from "../ui/card";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { Car, AlertTriangle, ArrowRight, RotateCcw, CheckCircle2, Info, MousePointer2, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
-interface SimulationInterfaceProps {
-  onNavigate: (page: string) => void;
-}
-
-export const SimulationInterface = ({ onNavigate }: SimulationInterfaceProps) => {
+export const SimulationInterface = () => {
+  const navigate = useNavigate();
   const [phase, setPhase] = useState<'decision' | 'result'>('decision');
   const [choice, setChoice] = useState<string | null>(null);
 
@@ -21,7 +19,7 @@ export const SimulationInterface = ({ onNavigate }: SimulationInterfaceProps) =>
   return (
     <div className="container mx-auto p-4 md:p-6 h-[calc(100vh-80px)] flex flex-col max-w-7xl">
         <div className="flex items-center justify-between mb-4 px-2">
-            <Button variant="ghost" onClick={() => onNavigate('practice')} className="hover:bg-slate-100">
+            <Button variant="ghost" onClick={() => navigate('/practice')} className="hover:bg-slate-100">
                 <X className="h-5 w-5 mr-2" /> Выйти
             </Button>
             <div className="flex flex-col items-center">
@@ -124,7 +122,7 @@ export const SimulationInterface = ({ onNavigate }: SimulationInterfaceProps) =>
                                  <Button size="lg" variant="outline" className="w-full bg-white hover:bg-slate-50 text-slate-700 border-slate-300" onClick={() => setPhase('decision')}>
                                     <RotateCcw className="mr-2 h-4 w-4" /> Попробовать снова
                                  </Button>
-                                 <Button size="lg" className="w-full shadow-md" onClick={() => onNavigate('practice')}>
+                                 <Button size="lg" className="w-full shadow-md" onClick={() => navigate('/practice')}>
                                     Следующая ситуация <ArrowRight className="ml-2 h-4 w-4" />
                                  </Button>
                             </div>

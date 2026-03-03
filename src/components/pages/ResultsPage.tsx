@@ -4,12 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Badge } from "../ui/badge";
 import { CheckCircle2, XCircle, RotateCcw, BookOpen, ArrowRight, BarChart3 } from "lucide-react";
 import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
-interface ResultsPageProps {
-  onNavigate: (page: string) => void;
-}
-
-export const ResultsPage = ({ onNavigate }: ResultsPageProps) => {
+export const ResultsPage = () => {
+  const navigate = useNavigate();
   return (
     <div className="container mx-auto p-4 md:p-8 max-w-5xl">
        
@@ -93,7 +91,7 @@ export const ResultsPage = ({ onNavigate }: ResultsPageProps) => {
                                <p className="text-sm text-orange-800 leading-relaxed">
                                    Вам стоит повторить тему <b className="text-orange-950">"Проезд перекрестков"</b>. Вы часто ошибаетесь в вопросах приоритета при повороте налево.
                                </p>
-                               <Button size="sm" variant="outline" className="bg-white border-orange-200 text-orange-700 hover:bg-orange-100 mt-2" onClick={() => onNavigate('lesson')}>
+                               <Button size="sm" variant="outline" className="bg-white border-orange-200 text-orange-700 hover:bg-orange-100 mt-2" onClick={() => navigate('/lesson')}>
                                    Перейти к уроку <ArrowRight className="ml-2 h-3 w-3" />
                                </Button>
                            </div>
@@ -151,10 +149,10 @@ export const ResultsPage = ({ onNavigate }: ResultsPageProps) => {
        </div>
 
        <div className="flex justify-center gap-4 mt-12 pb-12">
-           <Button size="lg" className="px-8 h-12 text-lg shadow-lg" onClick={() => onNavigate('test')}>
+           <Button size="lg" className="px-8 h-12 text-lg shadow-lg" onClick={() => navigate('/test')}>
                <RotateCcw className="mr-2 h-5 w-5" /> Пройти еще раз
            </Button>
-           <Button size="lg" variant="outline" className="px-8 h-12 text-lg bg-white hover:bg-slate-50 shadow-sm" onClick={() => onNavigate('practice')}>
+           <Button size="lg" variant="outline" className="px-8 h-12 text-lg bg-white hover:bg-slate-50 shadow-sm" onClick={() => navigate('/practice')}>
                <BookOpen className="mr-2 h-5 w-5" /> Вернуться к практике
            </Button>
        </div>

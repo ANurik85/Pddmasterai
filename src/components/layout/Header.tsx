@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import {
@@ -30,11 +31,8 @@ import {
   Target,
 } from "lucide-react";
 
-interface HeaderProps {
-  onNavigate: (page: string) => void;
-}
-
-export const Header = ({ onNavigate }: HeaderProps) => {
+export const Header = () => {
+  const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -58,14 +56,14 @@ export const Header = ({ onNavigate }: HeaderProps) => {
   const handleSearchResultClick = (page: string) => {
     setSearchOpen(false);
     setSearchQuery("");
-    onNavigate(page);
+    navigate(`/${page}`);
   };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 gap-4">
         {/* Logo Section */}
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => onNavigate('home')}>
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/')}>
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <ShieldCheck className="h-5 w-5" />
           </div>
@@ -84,13 +82,13 @@ export const Header = ({ onNavigate }: HeaderProps) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
-              <DropdownMenuItem onSelect={() => onNavigate('learn')}>
+              <DropdownMenuItem onSelect={() => navigate('/learn')}>
                 Курсы
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => onNavigate('cards')}>
+              <DropdownMenuItem onSelect={() => navigate('/cards')}>
                 Карточки
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => onNavigate('ai-explanation')}>
+              <DropdownMenuItem onSelect={() => navigate('/ai-explanation')}>
                 AI Симулятор
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -104,13 +102,16 @@ export const Header = ({ onNavigate }: HeaderProps) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
-              <DropdownMenuItem onSelect={() => onNavigate('test')}>
+            <DropdownMenuItem onSelect={() => navigate('/practice')}>
+                Главная
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => navigate('/test')}>
                 Тесты
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => onNavigate('test')}>
+              <DropdownMenuItem onSelect={() => navigate('/test')}>
                 Экзамен
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => onNavigate('simulation')}>
+              <DropdownMenuItem onSelect={() => navigate('/simulation')}>
                 Симуляции
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -124,19 +125,19 @@ export const Header = ({ onNavigate }: HeaderProps) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
-              <DropdownMenuItem onSelect={() => onNavigate('games')}>
+              <DropdownMenuItem onSelect={() => navigate('/games')}>
                 Мини-игры
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => onNavigate('ai-explanation')}>
+              <DropdownMenuItem onSelect={() => navigate('/ai-explanation')}>
                 Сборщик сценариев
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => onNavigate('analyze-photo')}>
+              <DropdownMenuItem onSelect={() => navigate('/analyze-photo')}>
                 Анализ фото
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Button variant="ghost" className="text-sm font-medium" onClick={() => onNavigate('profile')}>
+          <Button variant="ghost" className="text-sm font-medium" onClick={() => navigate('/profile')}>
             Мой прогресс
           </Button>
         </nav>
@@ -149,7 +150,7 @@ export const Header = ({ onNavigate }: HeaderProps) => {
             variant="ghost"
             size="icon"
             className="text-primary hover:text-primary/80 hover:bg-primary/10"
-            onClick={() => onNavigate('ai-explanation')}
+            onClick={() => navigate('/ai-explanation')}
           >
             <MessageCircle className="h-5 w-5" />
             <span className="sr-only">AI Помощник</span>
@@ -205,8 +206,8 @@ export const Header = ({ onNavigate }: HeaderProps) => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Мой аккаунт</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onSelect={() => onNavigate('profile')}>Личный кабинет</DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => onNavigate('profile')}>Настройки</DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => navigate('/profile')}>Личный кабинет</DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => navigate('/profile')}>Настройки</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem className="text-red-500">Выход</DropdownMenuItem>
             </DropdownMenuContent>

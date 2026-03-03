@@ -7,12 +7,10 @@ import { Progress } from "../ui/progress";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { Clock, AlertTriangle, CheckCircle2, XCircle, HelpCircle, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
-interface TestInterfaceProps {
-  onNavigate: (page: string) => void;
-}
-
-export const TestInterface = ({ onNavigate }: TestInterfaceProps) => {
+export const TestInterface = () => {
+  const navigate = useNavigate();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
@@ -66,11 +64,11 @@ export const TestInterface = ({ onNavigate }: TestInterfaceProps) => {
 
   const handleNext = () => {
     if (currentQuestion < questions.length - 1) {
-        setCurrentQuestion(prev => prev + 1);
-        setSelectedAnswer(null);
-        setIsAnswered(false);
+      setCurrentQuestion(prev => prev + 1);
+      setSelectedAnswer(null);
+      setIsAnswered(false);
     } else {
-        onNavigate('results');
+      navigate('/results');
     }
   };
 
