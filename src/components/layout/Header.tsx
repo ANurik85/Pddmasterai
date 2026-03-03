@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,6 +36,7 @@ export const Header = () => {
   const navigate = useNavigate();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Mock search results
   const searchResults = [
@@ -57,6 +59,11 @@ export const Header = () => {
     setSearchOpen(false);
     setSearchQuery("");
     navigate(`/${page}`);
+  };
+
+  const handleMobileNavigate = (path: string) => {
+    setMobileMenuOpen(false);
+    navigate(path);
   };
 
   return (
@@ -214,9 +221,111 @@ export const Header = () => {
           </DropdownMenu>
 
           {/* Mobile Menu Toggle */}
-          <Button variant="ghost" size="icon" className="lg:hidden">
-            <Menu className="h-5 w-5" />
-          </Button>
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="lg:hidden" aria-label="Открыть меню">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="p-0">
+              <SheetHeader className="border-b">
+                <SheetTitle>Меню</SheetTitle>
+              </SheetHeader>
+              <nav className="p-2 space-y-1">
+                <div className="px-2 pt-2 pb-1 text-xs font-medium text-muted-foreground">
+                  Обучение
+                </div>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  onClick={() => handleMobileNavigate("/learn")}
+                >
+                  Курсы
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  onClick={() => handleMobileNavigate("/cards")}
+                >
+                  Карточки
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  onClick={() => handleMobileNavigate("/ai-explanation")}
+                >
+                  AI Симулятор
+                </Button>
+
+                <div className="px-2 pt-4 pb-1 text-xs font-medium text-muted-foreground">
+                  Практика
+                </div>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  onClick={() => handleMobileNavigate("/practice")}
+                >
+                  Главная
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  onClick={() => handleMobileNavigate("/test")}
+                >
+                  Тесты
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  onClick={() => handleMobileNavigate("/test")}
+                >
+                  Экзамен
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  onClick={() => handleMobileNavigate("/simulation")}
+                >
+                  Симуляции
+                </Button>
+
+                <div className="px-2 pt-4 pb-1 text-xs font-medium text-muted-foreground">
+                  Тренажеры
+                </div>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  onClick={() => handleMobileNavigate("/games")}
+                >
+                  Мини-игры
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  onClick={() => handleMobileNavigate("/ai-explanation")}
+                >
+                  Сборщик сценариев
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="w-full justify-start"
+                  onClick={() => handleMobileNavigate("/analyze-photo")}
+                >
+                  Анализ фото
+                </Button>
+
+                <div className="pt-3">
+                  <Button
+                    variant="secondary"
+                    className="w-full justify-start"
+                    onClick={() => handleMobileNavigate("/profile")}
+                  >
+                    Мой прогресс
+                  </Button>
+                </div>
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
 
