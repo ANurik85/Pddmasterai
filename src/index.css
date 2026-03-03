@@ -231,6 +231,7 @@
 
   html, :host {
     -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%; /* Add this line */
     tab-size: 4;
     line-height: 1.5;
     font-family: var(--default-font-family, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji");
@@ -2627,6 +2628,7 @@
 
   .\[mask-image\:linear-gradient\(0deg\,white\,rgba\(255\,255\,255\,0\.6\)\)\] {
     mask-image: linear-gradient(0deg, #fff, #fff9);
+    -webkit-mask-image: linear-gradient(0deg, #fff, #fff9);
   }
 
   .bg-clip-text {
