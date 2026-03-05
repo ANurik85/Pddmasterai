@@ -552,33 +552,27 @@ const CardItem = ({ card, isFlipped, status, onFlip, onStatus, onExpand }: CardI
             <p className="text-[9px] text-slate-400 mt-0.5">нажмите, чтобы перевернуть</p>
           </div>
 
-          {/* ── Status buttons on FRONT ── */}
+          {/* ── Status buttons on FRONT (no bg change on select) ── */}
           <div className="flex gap-1" onClick={e => e.stopPropagation()}>
             <button
-              className={`flex-1 py-1.5 rounded-xl border text-[11px] font-medium transition-all duration-200 flex items-center justify-center gap-0.5 ${
-                status === "forgot"
-                  ? "bg-red-500 text-white border-red-400"
-                  : "border-red-200 text-red-500 hover:bg-red-50 bg-white"
+              className={`flex-1 py-1.5 rounded-xl border text-[11px] font-medium bg-white transition-all duration-150 flex items-center justify-center gap-0.5 ${
+                status === "forgot" ? "border-red-400 text-red-600" : "border-slate-200 text-slate-400 hover:border-red-200 hover:text-red-500"
               }`}
               onClick={() => onStatus(status === "forgot" ? null : "forgot")}
             >
               <RotateCcw className="h-3 w-3" /> Забыл
             </button>
             <button
-              className={`flex-1 py-1.5 rounded-xl border text-[11px] font-medium transition-all duration-200 flex items-center justify-center gap-0.5 ${
-                status === "hard"
-                  ? "bg-orange-500 text-white border-orange-400"
-                  : "border-orange-200 text-orange-500 hover:bg-orange-50 bg-white"
+              className={`flex-1 py-1.5 rounded-xl border text-[11px] font-medium bg-white transition-all duration-150 flex items-center justify-center gap-0.5 ${
+                status === "hard" ? "border-orange-400 text-orange-600" : "border-slate-200 text-slate-400 hover:border-orange-200 hover:text-orange-500"
               }`}
               onClick={() => onStatus(status === "hard" ? null : "hard")}
             >
               <HelpCircle className="h-3 w-3" /> Сложно
             </button>
             <button
-              className={`flex-1 py-1.5 rounded-xl border text-[11px] font-medium transition-all duration-200 flex items-center justify-center gap-0.5 ${
-                status === "know"
-                  ? "bg-green-500 text-white border-green-400"
-                  : "border-green-200 text-green-600 hover:bg-green-50 bg-white"
+              className={`flex-1 py-1.5 rounded-xl border text-[11px] font-medium bg-white transition-all duration-150 flex items-center justify-center gap-0.5 ${
+                status === "know" ? "border-green-400 text-green-600" : "border-slate-200 text-slate-400 hover:border-green-200 hover:text-green-600"
               }`}
               onClick={() => onStatus(status === "know" ? null : "know")}
             >
@@ -601,17 +595,14 @@ const CardItem = ({ card, isFlipped, status, onFlip, onStatus, onExpand }: CardI
             <p className="text-white/80 text-[11px] leading-relaxed">{card.back.description}</p>
           </div>
 
-          {/* Expand icon — bottom-right */}
-          <div className="flex justify-end mt-2" onClick={e => e.stopPropagation()}>
-            <button
-              onClick={onExpand}
-              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white/20 hover:bg-white/35 transition-all text-white text-[11px] font-medium"
-              title="Увеличить"
-            >
-              <Maximize2 className="h-3.5 w-3.5" />
-              Увеличить
-            </button>
-          </div>
+          {/* Expand icon only — absolute bottom-right */}
+          <button
+            onClick={e => { e.stopPropagation(); onExpand(); }}
+            className="absolute bottom-3 right-3 p-2 rounded-xl bg-white/20 hover:bg-white/35 transition-all text-white"
+            title="Увеличить"
+          >
+            <Maximize2 className="h-3.5 w-3.5" />
+          </button>
         </div>
       </motion.div>
     </div>
@@ -637,50 +628,46 @@ const ExpandedCardModal = ({ card, status, onClose, onStatus }: ExpandedCardModa
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: "rgba(0,0,0,0.55)", backdropFilter: "blur(4px)" }}
+      style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(5px)" }}
       onClick={onClose}
     >
       <motion.div
-        initial={{ opacity: 0, scale: 0.88 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0, scale: 0.88, y: 16 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.88 }}
-        transition={{ duration: 0.22, type: "spring", stiffness: 300, damping: 28 }}
-        className="w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden"
+        transition={{ duration: 0.25, type: "spring", stiffness: 300, damping: 28 }}
+        className="w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden"
         onClick={e => e.stopPropagation()}
       >
-        {/* Front — sign */}
-        <div className="bg-white px-8 pt-8 pb-5 flex flex-col items-center text-center">
-          <div className="flex justify-between items-center w-full mb-4">
-            <span className="text-xs font-medium text-slate-400 uppercase tracking-wider">{card.category}</span>
-            <button onClick={onClose} className="p-1.5 rounded-full hover:bg-slate-100 transition-colors">
-              <X className="h-4 w-4 text-slate-400" />
-            </button>
+        {/* Back side only — enlarged */}
+        <div className={`bg-gradient-to-br ${backGradient} px-8 pt-8 pb-6 flex flex-col items-center text-center relative`}>
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 p-1.5 rounded-full bg-white/20 hover:bg-white/35 transition-colors"
+          >
+            <X className="h-4 w-4 text-white" />
+          </button>
+          <p className="text-white/55 text-[10px] uppercase tracking-widest mb-4">
+            {card.category} · {card.front.signNumber}
+          </p>
+          <div className="p-4 bg-white/20 rounded-2xl mb-5">
+            <BrainCircuit className="h-10 w-10 text-white" />
           </div>
-          <div className="w-44 h-44 mb-4">
-            <SignSVG type={card.front.signType} extra={card.front.extra} />
-          </div>
-          <p className="font-bold text-slate-800 text-xl mb-1">{card.front.signNumber}</p>
+          <h3 className="text-white font-bold text-2xl leading-tight mb-4">{card.back.title}</h3>
+          <p className="text-white/85 text-sm leading-relaxed">{card.back.description}</p>
         </div>
 
-        {/* Back — description */}
-        <div className={`bg-gradient-to-br ${backGradient} px-8 py-6`}>
-          <h3 className="text-white font-bold text-lg text-center mb-2 leading-tight">{card.back.title}</h3>
-          <p className="text-white/85 text-sm text-center leading-relaxed">{card.back.description}</p>
-        </div>
-
-        {/* Status buttons */}
+        {/* Status buttons — same no-bg style */}
         <div className="bg-white px-5 py-4 flex gap-2">
           {([
-            { key: "forgot" as const, label: "Забыл",  Icon: RotateCcw,  active: "bg-red-500 text-white border-red-400",    inactive: "border-red-200 text-red-500 hover:bg-red-50" },
-            { key: "hard"   as const, label: "Сложно", Icon: HelpCircle, active: "bg-orange-500 text-white border-orange-400", inactive: "border-orange-200 text-orange-500 hover:bg-orange-50" },
-            { key: "know"   as const, label: "Знаю",   Icon: Check,      active: "bg-green-500 text-white border-green-400",  inactive: "border-green-200 text-green-600 hover:bg-green-50" },
-          ]).map(({ key, label, Icon, active, inactive }) => (
+            { key: "forgot" as const, label: "Забыл",  Icon: RotateCcw,  sel: "border-red-400 text-red-600",    def: "border-slate-200 text-slate-400 hover:border-red-300 hover:text-red-500" },
+            { key: "hard"   as const, label: "Сложно", Icon: HelpCircle, sel: "border-orange-400 text-orange-600", def: "border-slate-200 text-slate-400 hover:border-orange-300 hover:text-orange-500" },
+            { key: "know"   as const, label: "Знаю",   Icon: Check,      sel: "border-green-400 text-green-600",  def: "border-slate-200 text-slate-400 hover:border-green-300 hover:text-green-600" },
+          ]).map(({ key, label, Icon, sel, def }) => (
             <button
               key={key}
               onClick={() => onStatus(status === key ? null : key)}
-              className={`flex-1 py-2 rounded-xl border text-sm font-medium transition-all flex items-center justify-center gap-1.5 ${
-                status === key ? active : `bg-white ${inactive}`
-              }`}
+              className={`flex-1 py-2.5 rounded-xl border text-sm font-medium bg-white transition-all flex items-center justify-center gap-1.5 ${status === key ? sel : def}`}
             >
               <Icon className="h-4 w-4" /> {label}
             </button>
@@ -701,6 +688,10 @@ export const FlashcardsPage = ({ onNavigate }: FlashcardsPageProps) => {
   const [cardStatuses, setCardStatuses]       = useState<Record<number, CardStatus>>({});
   const [visibleCount, setVisibleCount]       = useState(10);
   const [expandedCard, setExpandedCard]       = useState<FlashCard | null>(null);
+  const [viewedCardIds, setViewedCardIds]     = useState<Set<number>>(new Set());
+  const [showCategories, setShowCategories]   = useState(true);
+  const [showHintsPopup, setShowHintsPopup]   = useState(false);
+  const hintsRef = useRef<HTMLDivElement>(null);
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -732,9 +723,14 @@ export const FlashcardsPage = ({ onNavigate }: FlashcardsPageProps) => {
     }
   };
 
-  // Flip: only one card at a time; clicking flipped card closes it
+  // Flip: only one card at a time; clicking flipped card closes it; track viewed
   const handleFlip = (id: number) => {
-    setFlippedCardId(prev => (prev === id ? null : id));
+    setFlippedCardId(prev => {
+      if (prev !== id) {
+        setViewedCardIds(v => new Set(v).add(id));
+      }
+      return prev === id ? null : id;
+    });
   };
 
   const handleStatus = (id: number, s: CardStatus) => {
@@ -768,8 +764,12 @@ export const FlashcardsPage = ({ onNavigate }: FlashcardsPageProps) => {
   const catTotal = (name: string) => ALL_CARDS.filter(c => c.category === name).length;
   const catKnow  = (name: string) => ALL_CARDS.filter(c => c.category === name && cardStatuses[c.id] === "know").length;
 
-  // Global status counts (not per-category)
-  const globalByStatus = (s: CardStatus) => ALL_CARDS.filter(c => cardStatuses[c.id] === s).length;
+  // Group-scoped cards (for status filter counts in point 3)
+  const groupScopedCards = activeGroup
+    ? ALL_CARDS.filter(c => CATEGORIES.find(cat => cat.name === c.category)?.group === activeGroup)
+    : ALL_CARDS;
+  const groupByStatus = (s: CardStatus) => groupScopedCards.filter(c => cardStatuses[c.id] === s).length;
+  const groupTotal = groupScopedCards.length;
 
   const currentCat = CATEGORIES.find(c => c.name === activeCategory);
 
@@ -792,28 +792,68 @@ export const FlashcardsPage = ({ onNavigate }: FlashcardsPageProps) => {
               </div>
             </div>
 
-            {/* Stats between title and badge */}
-            <div className="flex items-center gap-2 md:gap-3 text-xs">
-              {/* Mini stat pills */}
-              <div className="hidden md:flex items-center gap-1.5 bg-slate-50 border border-slate-100 rounded-xl px-3 py-1.5">
-                <span className="flex items-center gap-1 text-green-600 font-medium">
-                  <span className="w-2 h-2 rounded-full bg-green-400 inline-block" />
-                  {knowCount} знаю
+            {/* Right side: stats + progress + viewed + ? + badge */}
+            <div className="flex items-center gap-2 text-xs">
+
+              {/* Numbers only (point 8) */}
+              <div className="hidden sm:flex items-center gap-1.5 bg-slate-50 border border-slate-100 rounded-xl px-2.5 py-1.5">
+                <span className="flex items-center gap-1 text-green-600 font-semibold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block" />{knowCount}
                 </span>
                 <span className="text-slate-300">·</span>
-                <span className="flex items-center gap-1 text-orange-500 font-medium">
-                  <span className="w-2 h-2 rounded-full bg-orange-400 inline-block" />
-                  {hardCount} сложно
+                <span className="flex items-center gap-1 text-orange-500 font-semibold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-400 inline-block" />{hardCount}
                 </span>
                 <span className="text-slate-300">·</span>
-                <span className="flex items-center gap-1 text-red-500 font-medium">
-                  <span className="w-2 h-2 rounded-full bg-red-400 inline-block" />
-                  {forgotCount} забыл
+                <span className="flex items-center gap-1 text-red-500 font-semibold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-400 inline-block" />{forgotCount}
                 </span>
               </div>
-              <Badge variant="secondary" className="bg-blue-50 text-blue-700 border-blue-100 border text-[11px]">
-                {ALL_CARDS.length} карточек
-              </Badge>
+
+              {/* Green progress bar — % Знаю (point 6) */}
+              <div className="hidden md:flex items-center gap-1.5 bg-slate-50 border border-slate-100 rounded-xl px-2.5 py-1.5">
+                <div className="w-14 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-green-500 rounded-full transition-all duration-500"
+                    style={{ width: `${Math.round((knowCount / ALL_CARDS.length) * 100)}%` }}
+                  />
+                </div>
+                <span className="text-green-600 font-semibold">{Math.round((knowCount / ALL_CARDS.length) * 100)}%</span>
+              </div>
+
+              {/* Просмотрено X / 47 (point 9, replaces old badge text) */}
+              <div className="hidden sm:flex items-center gap-1 text-slate-500 bg-slate-50 border border-slate-100 rounded-xl px-2.5 py-1.5">
+                <span>просм.</span>
+                <span className="font-semibold text-slate-700">{viewedCardIds.size}<span className="text-slate-400 font-normal">/{ALL_CARDS.length}</span></span>
+              </div>
+
+              {/* ? hints icon (point 7) */}
+              <div className="relative" ref={hintsRef}>
+                <button
+                  onClick={() => setShowHintsPopup(v => !v)}
+                  className="w-7 h-7 rounded-full bg-slate-100 hover:bg-blue-100 hover:text-blue-600 flex items-center justify-center text-slate-500 font-semibold text-xs transition-colors"
+                >
+                  ?
+                </button>
+                {showHintsPopup && (
+                  <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-2xl shadow-xl border border-slate-100 p-4 z-30">
+                    <div className="flex justify-between items-center mb-3">
+                      <p className="text-xs font-semibold text-slate-700">Подсказки</p>
+                      <button onClick={() => setShowHintsPopup(false)}>
+                        <X className="h-3.5 w-3.5 text-slate-400" />
+                      </button>
+                    </div>
+                    <div className="flex flex-col gap-2 text-xs text-slate-500">
+                      <span className="flex items-center gap-2"><span className="text-base">↩</span> Нажмите на карточку — перевернёт</span>
+                      <span className="flex items-center gap-2"><span className="text-base">⏱</span> Через 30 сек — вернётся автоматически</span>
+                      <span className="flex items-center gap-2"><span className="text-base">🔍</span> Иконка на обороте — увеличить вид</span>
+                      <span className="flex items-center gap-2"><span className="w-3 h-3 rounded bg-green-400 inline-block shrink-0" /> Знаю — зелёная рамка</span>
+                      <span className="flex items-center gap-2"><span className="w-3 h-3 rounded bg-orange-400 inline-block shrink-0" /> Сложно — оранжевая рамка</span>
+                      <span className="flex items-center gap-2"><span className="w-3 h-3 rounded bg-red-400 inline-block shrink-0" /> Забыл — красная рамка</span>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -821,92 +861,45 @@ export const FlashcardsPage = ({ onNavigate }: FlashcardsPageProps) => {
 
       <div className="container mx-auto px-4 md:px-6 max-w-6xl py-5">
 
-        {/* ── Compact filter panel ───────────────────────────────── */}
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-4 mb-5">
+        {/* ── Filter panel ─────────────────────────────────────────── */}
+        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-3 mb-4">
 
-          {/* Level 1 — Groups */}
-          <div className="mb-3">
-            <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-2">Группа</p>
-            <div className="flex flex-wrap gap-1.5">
-              <button
-                onClick={() => handleGroupChange(null)}
-                className={`px-3 py-1 rounded-lg text-xs font-medium border transition-all ${
-                  activeGroup === null
-                    ? "bg-slate-800 text-white border-slate-800"
-                    : "bg-slate-50 text-slate-600 border-slate-200 hover:border-slate-300"
-                }`}
-              >
-                Все
-              </button>
-              {GROUPS.map(g => (
+          {/* Row 1: Groups + Status in one line (points 2 & 10) */}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+            {/* Groups */}
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider shrink-0">Группа:</span>
+              {([null, ...GROUPS] as const).map((g, i) => (
                 <button
-                  key={g}
-                  onClick={() => handleGroupChange(activeGroup === g ? null : g)}
-                  className={`px-3 py-1 rounded-lg text-xs font-medium border transition-all ${
+                  key={i}
+                  onClick={() => handleGroupChange(g as string | null)}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-all ${
                     activeGroup === g
                       ? "bg-slate-800 text-white border-slate-800"
                       : "bg-slate-50 text-slate-600 border-slate-200 hover:border-slate-300"
                   }`}
                 >
-                  {g === "Дорожные знаки" ? "Знаки" :
-                   g === "Дорожная разметка" ? "Разметка" : "Светофор"}
+                  {g === null ? "Все" : g === "Дорожные знаки" ? "Знаки" : g === "Дорожная разметка" ? "Разметка" : "Светофор"}
                 </button>
               ))}
             </div>
-          </div>
 
-          {/* Divider */}
-          <div className="border-t border-slate-100 mb-3" />
+            <div className="w-px h-5 bg-slate-200 hidden sm:block" />
 
-          {/* Level 2 — Categories */}
-          <div className="mb-3">
-            <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-2">Категория</p>
-            <div className="flex flex-wrap gap-1.5">
-              {categoriesInGroup.map(cat => {
-                const total = catTotal(cat.name);
-                const know  = catKnow(cat.name);
-                const isActive = activeCategory === cat.name;
-                return (
-                  <button
-                    key={cat.name}
-                    onClick={() => handleCategoryChange(cat.name)}
-                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-medium transition-all ${
-                      isActive
-                        ? "bg-blue-600 text-white border-blue-600 shadow-sm"
-                        : "bg-slate-50 text-slate-700 border-slate-200 hover:border-slate-300"
-                    }`}
-                  >
-                    <span>{cat.icon}</span>
-                    <span>{cat.name}</span>
-                    <span className={`text-[10px] px-1 py-0.5 rounded-full leading-none ${
-                      isActive ? "bg-white/25 text-white" : "bg-slate-200 text-slate-500"
-                    }`}>
-                      {know > 0 ? `${know}/` : ""}{total}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div className="border-t border-slate-100 mb-3" />
-
-          {/* Level 3 — Status filter */}
-          <div>
-            <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-2">Фильтр по статусу</p>
-            <div className="flex flex-wrap gap-1.5">
+            {/* Status filter — counts from current group (point 3) */}
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider shrink-0">Статус:</span>
               {([
-                { key: "all",    label: "Все",    count: ALL_CARDS.length,        color: "bg-slate-800 text-white", inactive: "bg-slate-50 text-slate-600 border-slate-200" },
-                { key: "know",   label: "Знаю",   count: globalByStatus("know"),   color: "bg-green-600 text-white border-green-600",   inactive: "bg-green-50 text-green-700 border-green-200" },
-                { key: "hard",   label: "Сложно", count: globalByStatus("hard"),   color: "bg-orange-500 text-white border-orange-500", inactive: "bg-orange-50 text-orange-700 border-orange-200" },
-                { key: "forgot", label: "Забыл",  count: globalByStatus("forgot"), color: "bg-red-600 text-white border-red-600",        inactive: "bg-red-50 text-red-700 border-red-200" },
+                { key: "all",    label: "Все",    count: groupTotal,            color: "bg-slate-800 text-white border-slate-800",          inactive: "bg-slate-50 text-slate-600 border-slate-200" },
+                { key: "know",   label: "Знаю",   count: groupByStatus("know"),   color: "bg-green-600 text-white border-green-600",   inactive: "bg-green-50 text-green-700 border-green-200" },
+                { key: "hard",   label: "Сложно", count: groupByStatus("hard"),   color: "bg-orange-500 text-white border-orange-500", inactive: "bg-orange-50 text-orange-700 border-orange-200" },
+                { key: "forgot", label: "Забыл",  count: groupByStatus("forgot"), color: "bg-red-600 text-white border-red-600",        inactive: "bg-red-50 text-red-700 border-red-200" },
               ] as const).map(({ key, label, count, color, inactive }) => (
                 <button
                   key={key}
                   onClick={() => { setStatusFilter(key); setVisibleCount(10); setFlippedCardId(null); }}
-                  className={`flex items-center gap-1.5 px-3 py-1 rounded-lg border text-xs font-medium transition-all ${
-                    statusFilter === key ? `${color} border-current` : `${inactive} hover:opacity-80`
+                  className={`flex items-center gap-1 px-2.5 py-1 rounded-lg border text-xs font-medium transition-all ${
+                    statusFilter === key ? color : `${inactive} hover:opacity-80`
                   }`}
                 >
                   {key === "know"   && <Check className="h-3 w-3" />}
@@ -914,48 +907,72 @@ export const FlashcardsPage = ({ onNavigate }: FlashcardsPageProps) => {
                   {key === "forgot" && <RotateCcw className="h-3 w-3" />}
                   {label}
                   <span className={`text-[10px] px-1 rounded-full leading-none font-normal ${
-                    statusFilter === key ? "bg-white/25" : "bg-current/10 opacity-60"
-                  }`}>
-                    {count}
-                  </span>
+                    statusFilter === key ? "bg-white/25" : "opacity-60"
+                  }`}>{count}</span>
                 </button>
               ))}
             </div>
           </div>
+
+          {/* Divider */}
+          <div className="border-t border-slate-100 mt-3 mb-3" />
+
+          {/* Collapsible categories list (points 2 & 7) */}
+          <div>
+            <button
+              onClick={() => setShowCategories(v => !v)}
+              className="flex items-center gap-2 text-xs font-medium text-slate-500 hover:text-slate-800 transition-colors w-full"
+            >
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-200 ${showCategories ? "rotate-180" : ""}`} />
+              <span>Категории</span>
+              <span className="text-slate-400 font-normal">· {activeCategory}</span>
+              <span className="ml-auto text-[10px] text-slate-400">{showCategories ? "скрыть" : "показать"}</span>
+            </button>
+
+            {showCategories && (
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5 mt-2.5">
+                {categoriesInGroup.map(cat => {
+                  const total = catTotal(cat.name);
+                  const know  = catKnow(cat.name);
+                  const isActive = activeCategory === cat.name;
+                  return (
+                    <button
+                      key={cat.name}
+                      onClick={() => handleCategoryChange(cat.name)}
+                      className={`flex items-center gap-1.5 px-2.5 py-2 rounded-xl border text-xs font-medium transition-all text-left ${
+                        isActive
+                          ? "bg-blue-600 text-white border-blue-600 shadow-sm"
+                          : "bg-slate-50 text-slate-700 border-slate-200 hover:border-slate-300"
+                      }`}
+                    >
+                      <span className="text-sm shrink-0">{cat.icon}</span>
+                      <span className="flex-1 leading-tight">{cat.name}</span>
+                      <span className={`text-[10px] shrink-0 ${isActive ? "text-white/70" : "text-slate-400"}`}>
+                        {know}/{total}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* ── Category title + progress ──────────────────────────── */}
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">{currentCat?.icon}</span>
-            <div>
-              <h2 className="font-bold text-slate-800 text-sm">{activeCategory}</h2>
-              <p className="text-[11px] text-slate-500">
-                {statusFilter !== "all" && (
-                  <span className={`mr-1 font-medium ${
-                    statusFilter === "know" ? "text-green-600" :
-                    statusFilter === "hard" ? "text-orange-600" : "text-red-600"
-                  }`}>
-                    фильтр ·
-                  </span>
-                )}
-                {filteredCards.length} карточек · показано {Math.min(visibleCount, filteredCards.length)}
-              </p>
-            </div>
+        {/* ── Category title bar ────────────────────────────────── */}
+        <div className="flex items-center gap-2 mb-4">
+          <span className="text-lg">{currentCat?.icon}</span>
+          <div>
+            <h2 className="font-bold text-slate-800 text-sm">{activeCategory}</h2>
+            <p className="text-[11px] text-slate-500">
+              {statusFilter !== "all" && (
+                <span className={`mr-1 font-medium ${
+                  statusFilter === "know" ? "text-green-600" :
+                  statusFilter === "hard" ? "text-orange-600" : "text-red-600"
+                }`}>фильтр ·</span>
+              )}
+              {filteredCards.length} карточек · показано {Math.min(visibleCount, filteredCards.length)}
+            </p>
           </div>
-          {catKnow(activeCategory) > 0 && (
-            <div className="flex items-center gap-2">
-              <div className="w-20 h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-green-500 rounded-full transition-all"
-                  style={{ width: `${(catKnow(activeCategory) / catTotal(activeCategory)) * 100}%` }}
-                />
-              </div>
-              <span className="text-[11px] text-slate-500">
-                {Math.round((catKnow(activeCategory) / catTotal(activeCategory)) * 100)}%
-              </span>
-            </div>
-          )}
         </div>
 
         {/* ── Card grid ─────────────────────────────────────────── */}
@@ -1018,17 +1035,7 @@ export const FlashcardsPage = ({ onNavigate }: FlashcardsPageProps) => {
           </>
         )}
 
-        {/* ── Legend ─────────────────────────────────────────────── */}
-        <div className="mt-2 p-3 bg-white rounded-2xl border border-slate-100 shadow-sm">
-          <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-2">Подсказки</p>
-          <div className="flex flex-wrap gap-x-5 gap-y-1.5 text-xs text-slate-500">
-            <span className="flex items-center gap-1.5"><span className="text-slate-400">↩</span> Нажмите на карточку — перевернёт</span>
-            <span className="flex items-center gap-1.5"><span className="text-slate-400">⏱</span> Через 30 сек — вернётся автоматически</span>
-            <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-green-400 inline-block" /> Знаю — зелёная рамка</span>
-            <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-orange-400 inline-block" /> Сложно — оранжевая рамка</span>
-            <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-red-400 inline-block" /> Забыл — красная рамка</span>
-          </div>
-        </div>
+
       </div>
 
       {/* ── Expanded card modal ────────────────────────────────── */}
