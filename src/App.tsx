@@ -34,7 +34,7 @@ export default function App() {
   const renderPage = () => {
     switch (currentPage) {
       case "home":
-        return <MainWorkspace />; // Using existing workspace as Home for now, or could be LearningHub
+        return <MainWorkspace onNavigate={setCurrentPage} />;
       case "learn":
         return <LearningHub onNavigate={setCurrentPage} />;
       case "practice":
@@ -65,7 +65,7 @@ export default function App() {
           <PhotoAnalysisPage onNavigate={setCurrentPage} />
         );
       default:
-        return <MainWorkspace />;
+        return <MainWorkspace onNavigate={setCurrentPage} />;
     }
   };
 

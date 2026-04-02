@@ -20,8 +20,6 @@ import {
   TrendingDown,
   TrendingUp,
   Bell,
-  Lock,
-  Eye,
   Palette,
   Globe,
   CreditCard,
@@ -296,49 +294,7 @@ export const SettingsTabContent = () => {
         </CardContent>
       </Card>
 
-      {/* Privacy Settings */}
-      <Card className="rounded-2xl border-slate-200">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Lock className="h-5 w-5" />
-            Приватность
-          </CardTitle>
-          <CardDescription>Управление конфиденциальностью</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50">
-            <div className="space-y-0.5">
-              <Label htmlFor="profile-visible">Публичный профиль</Label>
-              <p className="text-xs text-muted-foreground">Ваш профиль виден другим</p>
-            </div>
-            <Switch id="profile-visible" defaultChecked />
-          </div>
-          <Separator />
-          <div className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50">
-            <div className="space-y-0.5">
-              <Label htmlFor="show-stats">Показывать статистику</Label>
-              <p className="text-xs text-muted-foreground">Отображать ваши результаты</p>
-            </div>
-            <Switch id="show-stats" defaultChecked />
-          </div>
-          <Separator />
-          <div className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50">
-            <div className="space-y-0.5">
-              <Label htmlFor="leaderboard">Участие в рейтинге</Label>
-              <p className="text-xs text-muted-foreground">Показывать в топе</p>
-            </div>
-            <Switch id="leaderboard" defaultChecked />
-          </div>
-          <Separator />
-          <div className="flex items-center justify-between p-3 rounded-lg hover:bg-slate-50">
-            <div className="space-y-0.5">
-              <Label htmlFor="activity">Показывать активность</Label>
-              <p className="text-xs text-muted-foreground">Последнее время посещения</p>
-            </div>
-            <Switch id="activity" />
-          </div>
-        </CardContent>
-      </Card>
+
 
       {/* Interface Settings */}
       <Card className="rounded-2xl border-slate-200">
@@ -402,25 +358,7 @@ export const SettingsTabContent = () => {
               <option>Қазақша</option>
             </select>
           </div>
-          <Separator />
-          <div className="space-y-2">
-            <Label>Регион</Label>
-            <select className="w-full p-2 rounded-xl border border-slate-200 bg-white">
-              <option>Россия</option>
-              <option>Казахстан</option>
-              <option>Беларусь</option>
-              <option>Украина</option>
-            </select>
-          </div>
-          <Separator />
-          <div className="space-y-2">
-            <Label>Часовой пояс</Label>
-            <select className="w-full p-2 rounded-xl border border-slate-200 bg-white">
-              <option>GMT+3 (Москва)</option>
-              <option>GMT+5 (Екатеринбург)</option>
-              <option>GMT+7 (Новосибирск)</option>
-            </select>
-          </div>
+
         </CardContent>
       </Card>
     </div>
@@ -458,21 +396,7 @@ export const SubscriptionTabContent = () => {
       current: true,
       popular: true
     },
-    {
-      name: "Premium",
-      price: "999 ₽",
-      period: "/месяц",
-      features: [
-        "Все функции Pro",
-        "Личный инструктор",
-        "Индивидуальный план",
-        "Симулятор экзамена",
-        "Эксклюзивные материалы",
-        "VIP поддержка 24/7"
-      ],
-      current: false,
-      popular: false
-    }
+
   ];
 
   return (

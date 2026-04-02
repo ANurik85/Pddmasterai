@@ -7,8 +7,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Badge } from "../ui/badge";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { Textarea } from "../ui/textarea";
-import { Separator } from "../ui/separator";
 import { AchievementsTabContent, HistoryTabContent, SettingsTabContent, SubscriptionTabContent } from "./ProfileTabs";
 import { 
   TrendingUp, 
@@ -387,51 +385,34 @@ export const ProfilePage = ({ onNavigate }: ProfilePageProps) => {
 
             <Card className="rounded-2xl border-slate-200">
               <CardHeader>
-                <CardTitle>О себе</CardTitle>
-                <CardDescription>Расскажите немного о себе</CardDescription>
+                <CardTitle>Статистика профиля</CardTitle>
+                <CardDescription>Информация об активности и прогрессе</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="bio">Биография</Label>
-                  <Textarea 
-                    id="bio" 
-                    rows={5}
-                    placeholder="Расскажите о себе..."
-                    defaultValue="Изучаю ПДД для получения водительских прав. Планирую сдать экзамен через месяц."
-                    disabled={!isEditing}
-                    className="rounded-xl resize-none"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Цель обучения</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {['Получить права', 'Повысить навыки', 'Подготовка к экзамену', 'Общее развитие'].map((goal) => (
-                      <Badge key={goal} variant="secondary" className="rounded-full px-3 py-1">
-                        {goal}
-                      </Badge>
-                    ))}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-4 rounded-xl bg-blue-50 border border-blue-100 space-y-1">
+                    <p className="text-xs text-blue-500">Дата регистрации</p>
+                    <p className="text-sm font-medium text-slate-800">14 декабря 2024</p>
                   </div>
-                </div>
-                <Separator />
-                <div className="space-y-3">
-                  <h4 className="font-medium">Статистика профиля</h4>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <p className="text-xs text-muted-foreground">Дата регистрации</p>
-                      <p className="text-sm">14 декабря 2024</p>
-                    </div>
-                    <div className="space-y-1">
-                      <p className="text-xs text-muted-foreground">Последний вход</p>
-                      <p className="text-sm">Сегодня, 14:30</p>
-                    </div>
-                    <div className="space-y-1">
-                      <p className="text-xs text-muted-foreground">Всего баллов</p>
-                      <p className="text-sm">1,450 XP</p>
-                    </div>
-                    <div className="space-y-1">
-                      <p className="text-xs text-muted-foreground">Уровень</p>
-                      <p className="text-sm">5 / 10</p>
-                    </div>
+                  <div className="p-4 rounded-xl bg-green-50 border border-green-100 space-y-1">
+                    <p className="text-xs text-green-500">Последний вход</p>
+                    <p className="text-sm font-medium text-slate-800">Сегодня, 14:30</p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-amber-50 border border-amber-100 space-y-1">
+                    <p className="text-xs text-amber-500">Всего баллов</p>
+                    <p className="text-sm font-medium text-slate-800">1 450 XP</p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-purple-50 border border-purple-100 space-y-1">
+                    <p className="text-xs text-purple-500">Уровень</p>
+                    <p className="text-sm font-medium text-slate-800">5 / 10</p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <p className="text-xs text-slate-400">Уроков пройдено</p>
+                    <p className="text-sm font-medium text-slate-800">24 из 40</p>
+                  </div>
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <p className="text-xs text-slate-400">Серия дней</p>
+                    <p className="text-sm font-medium text-slate-800">15 дней подряд</p>
                   </div>
                 </div>
               </CardContent>

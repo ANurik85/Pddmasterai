@@ -3,7 +3,12 @@ import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { BrainCircuit, ShieldCheck, Smartphone, PlayCircle } from "lucide-react";
 
-export const MainWorkspace = () => {
+interface MainWorkspaceProps {
+  onNavigate?: (page: string) => void;
+}
+
+export const MainWorkspace = ({ onNavigate }: MainWorkspaceProps) => {
+  const nav = (page: string) => onNavigate?.(page);
   return (
     <div className="flex-1">
       {/* Hero Section */}
@@ -22,10 +27,10 @@ export const MainWorkspace = () => {
                  Персональная программа обучения, адаптирующаяся под ваши знания. Интерактивные симуляции, умные карточки и AI-наставник.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                 <Button size="lg" className="h-14 px-8 text-lg rounded-full shadow-lg bg-blue-600 hover:bg-blue-700">
+                 <Button size="lg" className="h-14 px-8 text-lg rounded-full shadow-lg bg-blue-600 hover:bg-blue-700" onClick={() => nav('learn')}>
                     Начать бесплатно
                  </Button>
-                 <Button size="lg" variant="outline" className="h-14 px-8 text-lg rounded-full gap-2">
+                 <Button size="lg" variant="outline" className="h-14 px-8 text-lg rounded-full gap-2" onClick={() => nav('lesson')}>
                     <PlayCircle className="h-5 w-5" /> Демо-урок
                  </Button>
               </div>
@@ -71,7 +76,7 @@ export const MainWorkspace = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-               <Card className="border-none shadow-none bg-slate-50/50 hover:bg-slate-50 transition-colors">
+               <Card className="border-none shadow-none bg-slate-50/50 hover:bg-slate-50 transition-colors cursor-pointer" onClick={() => nav('ai-explanation')}>
                   <CardContent className="p-8 space-y-4 text-center">
                      <div className="h-14 w-14 mx-auto rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
                         <BrainCircuit className="h-7 w-7" />
@@ -83,7 +88,7 @@ export const MainWorkspace = () => {
                   </CardContent>
                </Card>
 
-               <Card className="border-none shadow-none bg-slate-50/50 hover:bg-slate-50 transition-colors">
+               <Card className="border-none shadow-none bg-slate-50/50 hover:bg-slate-50 transition-colors cursor-pointer" onClick={() => nav('cards')}>
                   <CardContent className="p-8 space-y-4 text-center">
                      <div className="h-14 w-14 mx-auto rounded-xl bg-green-100 text-green-600 flex items-center justify-center">
                         <Smartphone className="h-7 w-7" />
@@ -95,7 +100,7 @@ export const MainWorkspace = () => {
                   </CardContent>
                </Card>
 
-               <Card className="border-none shadow-none bg-slate-50/50 hover:bg-slate-50 transition-colors">
+               <Card className="border-none shadow-none bg-slate-50/50 hover:bg-slate-50 transition-colors cursor-pointer" onClick={() => nav('test')}>
                   <CardContent className="p-8 space-y-4 text-center">
                      <div className="h-14 w-14 mx-auto rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center">
                         <ShieldCheck className="h-7 w-7" />

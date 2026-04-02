@@ -681,7 +681,7 @@ const ExpandedCardModal = ({ card, status, onClose, onStatus }: ExpandedCardModa
 // ─── Main page ────────────────────────────────────────────────────────────────
 
 export const FlashcardsPage = ({ onNavigate }: FlashcardsPageProps) => {
-  const [activeCategory, setActiveCategory]   = useState("Запрещающие");
+  const [activeCategory, setActiveCategory]   = useState<string | null>(null);
   const [activeGroup, setActiveGroup]         = useState<string | null>(null);
   const [statusFilter, setStatusFilter]       = useState<StatusFilter>("all");
   const [flippedCardId, setFlippedCardId]     = useState<number | null>(null);
@@ -705,22 +705,18 @@ export const FlashcardsPage = ({ onNavigate }: FlashcardsPageProps) => {
   }, [flippedCardId]);
 
   // When category changes — reset pagination and close open card
-  const handleCategoryChange = (cat: string) => {
+  const handleCategoryChange = (cat: string | null) => {
     setActiveCategory(cat);
     setVisibleCount(10);
     setFlippedCardId(null);
   };
 
-  // Group change — auto-select first category in the group if current is outside it
+  // Group change — reset category to "all"
   const handleGroupChange = (group: string | null) => {
     setActiveGroup(group);
-    if (group !== null) {
-      const groupCats = CATEGORIES.filter(c => c.group === group);
-      const inGroup = groupCats.some(c => c.name === activeCategory);
-      if (!inGroup && groupCats.length > 0) {
-        handleCategoryChange(groupCats[0].name);
-      }
-    }
+    setActiveCategory(null);
+    setVisibleCount(10);
+    setFlippedCardId(null);
   };
 
   // Flip: only one card at a time; clicking flipped card closes it; track viewed
@@ -742,14 +738,24 @@ export const FlashcardsPage = ({ onNavigate }: FlashcardsPageProps) => {
     ? CATEGORIES.filter(c => c.group === activeGroup)
     : CATEGORIES;
 
+  // Group-scoped cards (must be before filteredCards)
+  const groupScopedCards = useMemo(() =>
+    activeGroup
+      ? ALL_CARDS.filter(c => CATEGORIES.find(cat => cat.name === c.category)?.group === activeGroup)
+      : ALL_CARDS,
+    [activeGroup]
+  );
+
   // Filter cards
   const filteredCards = useMemo(() => {
-    let cards = ALL_CARDS.filter(c => c.category === activeCategory);
+    let cards = activeCategory
+      ? ALL_CARDS.filter(c => c.category === activeCategory)
+      : groupScopedCards;
     if (statusFilter !== "all") {
       cards = cards.filter(c => cardStatuses[c.id] === statusFilter);
     }
     return cards;
-  }, [activeCategory, statusFilter, cardStatuses]);
+  }, [activeCategory, statusFilter, cardStatuses, groupScopedCards]);
 
   const visibleCards = filteredCards.slice(0, visibleCount);
   const hasMore = visibleCount < filteredCards.length;
@@ -763,15 +769,11 @@ export const FlashcardsPage = ({ onNavigate }: FlashcardsPageProps) => {
 
   const catTotal = (name: string) => ALL_CARDS.filter(c => c.category === name).length;
   const catKnow  = (name: string) => ALL_CARDS.filter(c => c.category === name && cardStatuses[c.id] === "know").length;
+  const activeCatTotal = activeCategory ? catTotal(activeCategory) : groupScopedCards.length;
+  const activeCatKnow  = activeCategory ? catKnow(activeCategory) : groupScopedCards.filter(c => cardStatuses[c.id] === "know").length;
 
-  // Group-scoped cards (for status filter counts in point 3)
-  const groupScopedCards = activeGroup
-    ? ALL_CARDS.filter(c => CATEGORIES.find(cat => cat.name === c.category)?.group === activeGroup)
-    : ALL_CARDS;
   const groupByStatus = (s: CardStatus) => groupScopedCards.filter(c => cardStatuses[c.id] === s).length;
   const groupTotal = groupScopedCards.length;
-
-  const currentCat = CATEGORIES.find(c => c.name === activeCategory);
 
   return (
     <div className="min-h-screen bg-slate-50/60">
@@ -931,6 +933,21 @@ export const FlashcardsPage = ({ onNavigate }: FlashcardsPageProps) => {
 
             {showCategories && (
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-1.5 mt-2.5">
+                {/* "Все" category button */}
+                <button
+                  onClick={() => handleCategoryChange(null)}
+                  className={`flex items-center gap-1.5 px-2.5 py-2 rounded-xl border text-xs font-medium transition-all text-left ${
+                    activeCategory === null
+                      ? "bg-slate-800 text-white border-slate-800 shadow-sm"
+                      : "bg-slate-50 text-slate-700 border-slate-200 hover:border-slate-300"
+                  }`}
+                >
+                  <span className="text-sm shrink-0">📂</span>
+                  <span className="flex-1 leading-tight">Все</span>
+                  <span className={`text-[10px] shrink-0 ${activeCategory === null ? "text-white/70" : "text-slate-400"}`}>
+                    {groupScopedCards.filter(c => cardStatuses[c.id] === "know").length}/{groupScopedCards.length}
+                  </span>
+                </button>
                 {categoriesInGroup.map(cat => {
                   const total = catTotal(cat.name);
                   const know  = catKnow(cat.name);
@@ -959,20 +976,35 @@ export const FlashcardsPage = ({ onNavigate }: FlashcardsPageProps) => {
         </div>
 
         {/* ── Category title bar ────────────────────────────────── */}
-        <div className="flex items-center gap-2 mb-4">
-          <span className="text-lg">{currentCat?.icon}</span>
-          <div>
-            <h2 className="font-bold text-slate-800 text-sm">{activeCategory}</h2>
-            <p className="text-[11px] text-slate-500">
-              {statusFilter !== "all" && (
-                <span className={`mr-1 font-medium ${
-                  statusFilter === "know" ? "text-green-600" :
-                  statusFilter === "hard" ? "text-orange-600" : "text-red-600"
-                }`}>фильтр ·</span>
-              )}
-              {filteredCards.length} карточек · показано {Math.min(visibleCount, filteredCards.length)}
-            </p>
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <span className="text-lg">{activeCategory ? CATEGORIES.find(c => c.name === activeCategory)?.icon : "📂"}</span>
+            <div>
+              <h2 className="font-bold text-slate-800 text-sm">{activeCategory ?? "Все карточки"}</h2>
+              <p className="text-[11px] text-slate-500">
+                {statusFilter !== "all" && (
+                  <span className={`mr-1 font-medium ${
+                    statusFilter === "know" ? "text-green-600" :
+                    statusFilter === "hard" ? "text-orange-600" : "text-red-600"
+                  }`}>фильтр ·</span>
+                )}
+                {filteredCards.length} карточек · показано {Math.min(visibleCount, filteredCards.length)}
+              </p>
+            </div>
           </div>
+          {activeCatKnow > 0 && (
+            <div className="flex items-center gap-2">
+              <div className="w-20 h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-green-500 rounded-full transition-all"
+                  style={{ width: `${Math.round((activeCatKnow / activeCatTotal) * 100)}%` }}
+                />
+              </div>
+              <span className="text-[11px] text-green-600 font-medium">
+                {Math.round((activeCatKnow / activeCatTotal) * 100)}%
+              </span>
+            </div>
+          )}
         </div>
 
         {/* ── Card grid ─────────────────────────────────────────── */}
@@ -1029,7 +1061,7 @@ export const FlashcardsPage = ({ onNavigate }: FlashcardsPageProps) => {
                   <Check className="h-5 w-5 text-green-600" />
                 </div>
                 <p className="text-sm font-medium text-slate-600">Все карточки просмотрены</p>
-                <p className="text-xs text-slate-400 mt-0.5">Знаю: {catKnow(activeCategory)} / {catTotal(activeCategory)}</p>
+                <p className="text-xs text-slate-400 mt-0.5">Знаю: {activeCatKnow} / {activeCatTotal}</p>
               </div>
             )}
           </>

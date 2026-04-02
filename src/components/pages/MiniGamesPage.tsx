@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../ui/card";
 import { Badge } from "../ui/badge";
-import { Trophy, Play, Star, AlertCircle, CheckCircle, Hand, Timer } from "lucide-react";
+import { Trophy, Play, Star, AlertCircle, CheckCircle, Hand } from "lucide-react";
 import { motion } from "motion/react";
 
 interface MiniGamesPageProps {
@@ -44,17 +44,7 @@ export const MiniGamesPage = ({ onNavigate }: MiniGamesPageProps) => {
       points: "500 XP",
       tags: ["Реакция", "Регулировщик"]
     },
-    {
-      id: 4,
-      title: "Скоростной режим",
-      description: "Раннер. Управляйте скоростью в зависимости от знаков на дороге.",
-      icon: Timer,
-      color: "text-purple-500",
-      bg: "bg-purple-50",
-      difficulty: "Хардкор",
-      points: "1000 XP",
-      tags: ["Скорость", "Реакция"]
-    }
+
   ];
 
   return (
